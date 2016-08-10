@@ -8,7 +8,8 @@ A Grid contains the following elements:
 
 A Block is collection of occupied points.
 
-An ActiveBlock is a block (oriented independent of the grid), with an x and y coordinates.
+An ActiveBlock is a block (oriented independent of the grid), with an x and
+ y coordinates.
 '''
 from collections import namedtuple
 import random
@@ -36,11 +37,19 @@ class Grid:
     def move(self, dir):
         ''' (Grid, Direction) -> Grid
 
-        Returns a new grid with the current blocked moved 1 column to the left or right.
+        Returns a new grid with the current blocked moved 1 column to the left
+         or right.
         Returns None if an invalid Direction is provided.
         A Direction is either 'left' or 'right'.
         '''
-        raise NotImplementedError("Replace this line with your implementation")
+        if dir == 'left':
+            x, y, block = self.current_block
+            return Grid(self.blocks, ActiveBlock(x - 1, y, block))
+        elif dir == 'right':
+            x, y, block = self.current_block
+            return Grid(self.blocks, ActiveBlock(x + 1, y, block))
+        else:
+            return None
 
     def rotate(self):
         ''' Grid -> Grid
@@ -87,14 +96,16 @@ class Grid:
     def clear_full_rows(self):
         ''' Grid -> Grid
 
-        Returns a new Grid with any full rows cleared and the rows above them dropped
+        Returns a new Grid with any full rows cleared and the rows above them
+         dropped
         '''
         return self._clear_full_row(0)
 
     def place_block(self):
         ''' Grid -> Grid
 
-        Returns a new grid with the current block moved into the placed blocks and a None current block
+        Returns a new grid with the current block moved into the placed blocks
+         and a None current block
         '''
         return Grid(self.blocks + [Block([
             (self.current_block.x + bx, self.current_block.y + by)
@@ -112,7 +123,8 @@ class Grid:
 def new_block():
     ''' () -> Block
 
-    Returns a new block randomly chosen from the L, backwards L, |, T, S, and backwards S.
+    Returns a new block randomly chosen from the L, backwards L, |, T, S, and
+     backwards S.
     '''
     return random.choice([Block([(0, 2), (0, 1), (0, 0), (1, 0)]),
                           Block([(1, 2), (1, 1), (1, 0), (0, 0)]),
