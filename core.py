@@ -103,6 +103,10 @@ class Grid:
 
         Returns True iff the posn `p` is occupied by a non-active block.
         '''
+        for b in self.blocks:
+            for bp in b.posns:
+                if p == bp:
+                    return True
 
     def _drop_above(self, r):
         return Grid([Block([(x, y if y < r else y - 1) for x, y in b.posns])
