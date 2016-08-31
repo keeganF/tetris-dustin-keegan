@@ -13,7 +13,7 @@ An ActiveBlock is a block (oriented independent of the grid), with an x and y co
 from collections import namedtuple
 import random
 
-HEIGHT = 40
+HEIGHT = 30
 WIDTH = 15
 
 Block = namedtuple('Block', 'posns')
@@ -68,34 +68,33 @@ class Grid:
         A Grid is in a valid state if all blocks (including the ActiveBlock)
         are in bounds and not overlapping.
         '''
+        seen = set()
+        blocks = self.blocks
+        for block in blocks:
+            for bp in block.posns:
+                x, y = bp
+                seen.add((x, y))
+
+            if x < 0:
+                return False
+            elif y < 0:
+                return False
+            elif x >= WIDTH:
+                return False
 
         x, y, block = self.current_block
 
         for bp in block.posns:
             a, b = bp
-
             if (a + x) < 0:
                 return False
             elif (b + y) < 0:
                 return False
             elif (a + x) >= WIDTH:
                 return False
-            elif (b + y) > HEIGHT:
+            elif ((a + x), (b + y)) in seen:
                 return False
 
-        blocks = self.blocks
-
-        for block in blocks:
-            for bp in block.posns:
-                x, y = bp
-                if x < 0:
-                    return False
-                elif y < 0:
-                    return False
-                elif x >= WIDTH:
-                    return False
-                elif y > HEIGHT:
-                    return False
         return True
 
     def is_occupied(self, p):
