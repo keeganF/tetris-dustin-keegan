@@ -56,4 +56,4 @@ You can decide how the game is scored and how the score should be displayed.
 
 # To Play
 
-    $ python3 gui.py
+    $ python3 gui.py# tetris
